@@ -15,7 +15,8 @@ async def place_order(order: schemas.OrderCreate, db: Session = Depends(database
         raise HTTPException(status_code=400, detail="Restaurant not available")
     db_order = crud.create_order(db, order.dict())
     async with httpx.AsyncClient() as client:
-        response = await client.post(f"http://restaurant-service:8002/orders/{db_order.id}/assign")
+        # response = await client.post(f"http://restaurant-service:8002/orders/{db_order.id}/assign")
+        response = await client.post(f"http://localhost:8002/orders/{db_order.id}/assign")
         if response.status_code != 200:
             raise HTTPException(status_code=400, detail="Failed to assign delivery agent")
     return db_order

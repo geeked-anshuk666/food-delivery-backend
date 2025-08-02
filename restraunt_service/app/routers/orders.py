@@ -8,7 +8,8 @@ router = APIRouter(prefix="/orders", tags=["orders"])
 @router.post("/{order_id}/assign", response_model=schemas.OrderResponse)
 async def assign_delivery_agent(order_id: int, db: Session = Depends(database.get_db)):
     async with httpx.AsyncClient() as client:
-        response = await client.get("http://delivery-service:8003/agents/available")
+        # response = await client.get("http://delivery-service:8003/agents/available")
+        response = await client.get("http://localhost:8003/agents/available")
         if response.status_code != 200:
             raise HTTPException(status_code=400, detail="No available agents")
         agents = response.json()
