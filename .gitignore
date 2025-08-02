@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual Environments
+.venv/
+venv/
+env/
+*.venv/
+
+# Environment Variables
+.env
+*.env
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Testing
+.coverage
+coverage.xml
+*.cover
+*.pytest_cache/
+
+# Docker
+docker-compose.yml.bak
+*.dockerignore
+Dockerfile.bak
+
+# Database
+*.sql
+*.sqlite3
+*.db
+
+# Build and Distribution
+build/
+dist/
+*.egg
+*.eggs/
+*.whl
+
+# Temporary Files
+*.bak
+*.swp
+*~
+*.tmp
+
+# Project-Specific
+user_service/__pycache__/
+restaurant_service/__pycache__/
+delivery_service/__pycache__/
+*.cache
