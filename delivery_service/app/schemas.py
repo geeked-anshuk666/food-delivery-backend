@@ -8,4 +8,4 @@ class DeliveryAgentBase(BaseModel):
 class DeliveryAgentResponse(DeliveryAgentBase):
     id: int
     class Config:
-        orm_mode = True
+        from_attributes=True

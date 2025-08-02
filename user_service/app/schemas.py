@@ -9,8 +9,8 @@ class RestaurantBase(BaseModel):
 class RestaurantResponse(RestaurantBase):
     id: int
     class Config:
-        orm_mode = True
-
+        from_attributes=True
+        
 class OrderItem(BaseModel):
     item_id: int
     quantity: int
@@ -28,8 +28,8 @@ class OrderResponse(BaseModel):
     status: str
     created_at: datetime
     class Config:
-        orm_mode = True
-
+        from_attributes=True
+        
 class RatingCreate(BaseModel):
     order_id: int
     restaurant_rating: float
@@ -39,12 +39,13 @@ class RatingResponse(RatingCreate):
     id: int
     user_id: int
     class Config:
-        orm_mode = True
-
+        from_attributes=True
+        
 class UserBase(BaseModel):
     email: EmailStr
 
 class UserResponse(UserBase):
     id: int
     class Config:
-        orm_mode = True
+        from_attributes=True
+        

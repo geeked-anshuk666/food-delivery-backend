@@ -12,7 +12,7 @@ class MenuItemResponse(MenuItemBase):
     id: int
     restaurant_id: int
     class Config:
-        orm_mode = True
+        from_attributes=True
 
 class RestaurantBase(BaseModel):
     name: str
@@ -25,7 +25,7 @@ class RestaurantUpdate(BaseModel):
 class RestaurantResponse(RestaurantBase):
     id: int
     class Config:
-        orm_mode = True
+        from_attributes=True
 
 class OrderResponse(BaseModel):
     id: int
@@ -33,4 +33,4 @@ class OrderResponse(BaseModel):
     delivery_agent_id: Optional[int]
     status: str
     class Config:
-        orm_mode = True
+        from_attributes=True
