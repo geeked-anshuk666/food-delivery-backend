@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from .. import schemas, crud, database
+from .. import schemas, crud, database, models
 from ..dependencies import restaurant_service, delivery_service
+import logging
 
 router = APIRouter(prefix="/orders", tags=["orders"])
 
@@ -27,7 +28,7 @@ async def create_order(order: schemas.OrderCreate, db: Session = Depends(databas
         db.refresh(db_order)
     except Exception as e:
         # If delivery agent assignment fails, just log the error but don't delete the order
-        print(f"Failed to assign delivery agent: {str(e)}")
+        logging.error(f"Failed to assign delivery agent: {str(e)}")
         # The order will still be created without a delivery agent
     
     return db_order
