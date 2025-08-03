@@ -8,7 +8,7 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: user-db
+          name: food-delivery-shared-db # Use the shared database
           property: connectionString
       - key: USER_SERVICE_URL
         value: https://food-delivery-user-service.onrender.com
@@ -26,7 +26,7 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: food-delivery-restaurant-db # Renamed
+          name: food-delivery-shared-db # Use the shared database
           property: connectionString
       - key: USER_SERVICE_URL
         value: https://food-delivery-user-service.onrender.com
@@ -44,7 +44,7 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: food-delivery-delivery-db # Renamed
+          name: food-delivery-shared-db # Use the shared database
           property: connectionString
       - key: USER_SERVICE_URL
         value: https://food-delivery-user-service.onrender.com
@@ -54,9 +54,5 @@ services:
         value: https://food-delivery-delivery-service.onrender.com
 
 databases:
-  - name: user-db
-    plan: free
-  - name: food-delivery-restaurant-db # Renamed
-    plan: free
-  - name: food-delivery-delivery-db # Renamed
+  - name: food-delivery-shared-db # Define only one shared database
     plan: free
