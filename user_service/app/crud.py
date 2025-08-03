@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from . import models
 from datetime import datetime
 
-def get_online_restaurants(db: Session, hour: int):
+def get_online_restaurants(db: Session):
     return db.query(models.Restaurant).filter(models.Restaurant.is_online == True).all()
 
 def create_order(db: Session, order: dict):

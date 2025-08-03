@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from .routers import models
+from . import models
 
 def get_available_agents(db: Session):
     return db.query(models.DeliveryAgent).filter(models.DeliveryAgent.is_available == True).all()

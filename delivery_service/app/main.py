@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from .routers import delivery
 from .database import engine
-from .routers import models
+from . import models
 import uvicorn
 
 app = FastAPI(title="Delivery Agent Service")
