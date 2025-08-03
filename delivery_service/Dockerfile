@@ -10,4 +10,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY delivery_service/ .
 
 EXPOSE 8003
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port $PORT"]
+CMD ["sh", "-c", "python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT"]
