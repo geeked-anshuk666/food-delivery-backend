@@ -1,9 +1,9 @@
 services:
   - type: web
     name: food-delivery-user-service
-    env: python
-    buildCommand: cd user_service && pip install -r requirements.txt
-    startCommand: cd user_service && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    env: docker
+    dockerContext: .
+    dockerfilePath: ./user_service/Dockerfile
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -18,9 +18,9 @@ services:
 
   - type: web
     name: food-delivery-restaurant-service
-    env: python
-    buildCommand: cd restaurant_service && pip install -r requirements.txt
-    startCommand: cd restaurant_service && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    env: docker
+    dockerContext: .
+    dockerfilePath: ./restaurant_service/Dockerfile
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -35,9 +35,9 @@ services:
 
   - type: web
     name: food-delivery-delivery-service
-    env: python
-    buildCommand: cd delivery_service && pip install -r requirements.txt
-    startCommand: cd delivery_service && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    env: docker
+    dockerContext: .
+    dockerfilePath: ./delivery_service/Dockerfile
     envVars:
       - key: DATABASE_URL
         fromDatabase:

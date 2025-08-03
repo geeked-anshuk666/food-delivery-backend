@@ -9,11 +9,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copy service code
 COPY user_service/ .
 
-# Copy shared module
-COPY shared/ /app/shared/
-
-# Install requirements
-RUN pip install --no-cache-dir -r requirements.txt
-
 EXPOSE 8001
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port $PORT"]
