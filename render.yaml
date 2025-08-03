@@ -26,7 +26,7 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: restaurant-db
+          name: food-delivery-restaurant-db # Renamed
           property: connectionString
       - key: USER_SERVICE_URL
         value: https://food-delivery-user-service.onrender.com
@@ -44,7 +44,7 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: delivery-db
+          name: food-delivery-delivery-db # Renamed
           property: connectionString
       - key: USER_SERVICE_URL
         value: https://food-delivery-user-service.onrender.com
@@ -56,7 +56,7 @@ services:
 databases:
   - name: user-db
     plan: free
-  - name: restaurant-db
+  - name: food-delivery-restaurant-db # Renamed
     plan: free
-  - name: delivery-db
+  - name: food-delivery-delivery-db # Renamed
     plan: free
