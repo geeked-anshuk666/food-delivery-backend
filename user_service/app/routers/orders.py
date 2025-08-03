@@ -1,24 +1,35 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from .. import schemas, crud, database, models
-import httpx
+from .. import schemas, crud, database
+from ..dependencies import restaurant_service, delivery_service
 
 router = APIRouter(prefix="/orders", tags=["orders"])
 
 @router.post("/", response_model=schemas.OrderResponse)
-async def place_order(order: schemas.OrderCreate, db: Session = Depends(database.get_db)):
-    restaurant = db.query(models.Restaurant).filter(
-        models.Restaurant.id == order.restaurant_id,
-        models.Restaurant.is_online == True
-    ).first()
-    if not restaurant:
-        raise HTTPException(status_code=400, detail="Restaurant not available")
+async def create_order(order: schemas.OrderCreate, db: Session = Depends(database.get_db)):
+    """Place a new order"""
+    # Create the order in the database
     db_order = crud.create_order(db, order.dict())
-    async with httpx.AsyncClient() as client:
-        response = await client.post(f"http://restaurant-service:8002/orders/{db_order.id}/assign")
-        # response = await client.post(f"http://localhost:8002/orders/{db_order.id}/assign")
-        if response.status_code != 200:
-            raise HTTPException(status_code=400, detail="Failed to assign delivery agent")
+    
+    try:
+        # Try to assign a delivery agent
+        delivery_assignment = delivery_service.post(
+            "delivery-agents/assign", 
+            {
+                "order_id": db_order.id,
+                "restaurant_id": db_order.restaurant_id
+            }
+        )
+        
+        # Update the order with the delivery agent ID
+        db_order.delivery_agent_id = delivery_assignment.get("delivery_agent_id")
+        db.commit()
+        db.refresh(db_order)
+    except Exception as e:
+        # If delivery agent assignment fails, just log the error but don't delete the order
+        print(f"Failed to assign delivery agent: {str(e)}")
+        # The order will still be created without a delivery agent
+    
     return db_order
 
 @router.post("/ratings", response_model=schemas.RatingResponse)

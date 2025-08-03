@@ -1,31 +1,59 @@
+
 services:
   user-service:
-    build: ./user_service
+    build:
+      context: .
+      dockerfile: ./user_service/Dockerfile
     ports:
       - "8001:8001"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/user_db
+      - USER_SERVICE_URL=http://user-service:8001
+      - RESTAURANT_SERVICE_URL=http://restaurant-service:8002
+      - DELIVERY_AGENT_SERVICE_URL=http://delivery-service:8003
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - food-delivery-network
+    restart: always
+
   restaurant-service:
-    build: ./restaurant_service
+    build:
+      context: .
+      dockerfile: ./restaurant_service/Dockerfile
     ports:
       - "8002:8002"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/restaurant_db
+      - USER_SERVICE_URL=http://user-service:8001
+      - RESTAURANT_SERVICE_URL=http://restaurant-service:8002
+      - DELIVERY_AGENT_SERVICE_URL=http://delivery-service:8003
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - food-delivery-network
+    restart: always
+
   delivery-service:
-    build: ./delivery_service
+    build:
+      context: .
+      dockerfile: ./delivery_service/Dockerfile
     ports:
       - "8003:8003"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/delivery_db
+      - USER_SERVICE_URL=http://user-service:8001
+      - RESTAURANT_SERVICE_URL=http://restaurant-service:8002
+      - DELIVERY_AGENT_SERVICE_URL=http://delivery-service:8003
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - food-delivery-network
+    restart: always
+
   postgres:
     image: postgres:13
     environment:
@@ -41,5 +69,12 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - food-delivery-network
+
+networks:
+  food-delivery-network:
+    driver: bridge
+
 volumes:
   postgres_data:

@@ -1,15 +1,19 @@
 from fastapi import FastAPI
-from .routers import restaurants, menu, orders
-from .database import engine
-from . import models
-import uvicorn
+from .routers import restaurants, orders, menu
+from . import models, database
 
-app = FastAPI(title="Restaurant Service")
-models.Base.metadata.create_all(bind=engine)
+app = FastAPI(
+    title="Restaurant Service API",
+    description="API for restaurant management in the food delivery system",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc"
+)
 
+# Include routers
 app.include_router(restaurants.router)
-app.include_router(menu.router)
 app.include_router(orders.router)
+app.include_router(menu.router)  # Add this line to include the menu router
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8002)
+# Create tables
+models.Base.metadata.create_all(bind=database.engine)

@@ -1,30 +1,37 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
+from typing import List
 from .. import schemas, crud, database, models
-import httpx
+from ..dependencies import delivery_service
 
 router = APIRouter(prefix="/orders", tags=["orders"])
 
-@router.post("/{order_id}/assign", response_model=schemas.OrderResponse)
-async def assign_delivery_agent(order_id: int, db: Session = Depends(database.get_db)):
-    async with httpx.AsyncClient() as client:
-        response = await client.get("http://delivery-service:8003/agents/available")
-        # response = await client.get("http://localhost:8003/agents/available")
-        if response.status_code != 200:
-            raise HTTPException(status_code=400, detail="No available agents")
-        agents = response.json()
-        if not agents:
-            raise HTTPException(status_code=400, detail="No available agents")
-        order = crud.assign_delivery_agent(db, order_id, agents[0]["id"])
-        if not order:
-            raise HTTPException(status_code=404, detail="Order not found")
-        return order
-
-@router.put("/{order_id}/status", response_model=schemas.OrderResponse)
-async def update_order_status(order_id: int, status: str, db: Session = Depends(database.get_db)):
-    if status not in ["accepted", "rejected", "preparing"]:
-        raise HTTPException(status_code=400, detail="Invalid status")
-    order = crud.update_order_status(db, order_id, status)
+@router.put("/{order_id}/accept", response_model=schemas.OrderResponse)
+async def accept_order(order_id: int, db: Session = Depends(database.get_db)):
+    """Accept an order and assign a delivery agent"""
+    order = db.query(models.Order).filter(models.Order.id == order_id).first()
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
-    return order
+    
+    # Update order status
+    order.status = "accepted"
+    db.commit()
+    
+    try:
+        # Request a delivery agent from the delivery service
+        delivery_assignment = delivery_service.post(
+            "delivery-agents/assign", 
+            {"order_id": order_id, "restaurant_id": order.restaurant_id}
+        )
+        
+        # Update order with delivery agent info
+        order.delivery_agent_id = delivery_assignment.get("delivery_agent_id")
+        db.commit()
+        db.refresh(order)
+        
+        return order
+    except Exception as e:
+        # Rollback in case of error
+        order.status = "pending"
+        db.commit()
+        raise HTTPException(status_code=503, detail=f"Delivery service unavailable: {str(e)}")

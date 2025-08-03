@@ -1,15 +1,19 @@
 from fastapi import FastAPI
 from .routers import users, restaurants, orders
-from .database import engine
-import uvicorn
-from . import models
+from . import models, database
 
-app = FastAPI(title="User Service")
-models.Base.metadata.create_all(bind=engine)
+app = FastAPI(
+    title="User Service API",
+    description="API for user management in the food delivery system",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc"
+)
 
+# Include routers
 app.include_router(users.router)
 app.include_router(restaurants.router)
 app.include_router(orders.router)
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+# Create tables
+models.Base.metadata.create_all(bind=database.engine)
