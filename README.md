@@ -87,9 +87,9 @@ Once successfully deployed, your services will be available at the following URL
 
 ### Access Deployed API Documentation (Swagger UI):
 You can access the interactive API documentation for each deployed service here:
--   User Service: `https://food-delivery-user-service.onrender.com/docs`
--   Restaurant Service: `https://food-delivery-restaurant-service.onrender.com/docs`
--   Delivery Service: `https://food-delivery-delivery-service.onrender.com/docs`
+-   User Service: `https://food-delivery-user-service-nxxt.onrender.com/docs`
+-   Restaurant Service: `https://food-delivery-restaurant-service-reba.onrender.com/docs`
+-   Delivery Service: `https://food-delivery-delivery-service-br1b.onrender.com/docs`
 
 ## Postman Collection
 
