@@ -2,6 +2,7 @@ services:
   - type: web
     name: food-delivery-user-service
     env: docker
+    plan: free # Explicitly select the free instance type
     dockerContext: .
     dockerfilePath: ./user_service/Dockerfile
     envVars:
@@ -19,6 +20,7 @@ services:
   - type: web
     name: food-delivery-restaurant-service
     env: docker
+    plan: free # Explicitly select the free instance type
     dockerContext: .
     dockerfilePath: ./restaurant_service/Dockerfile
     envVars:
@@ -36,6 +38,7 @@ services:
   - type: web
     name: food-delivery-delivery-service
     env: docker
+    plan: free # Explicitly select the free instance type
     dockerContext: .
     dockerfilePath: ./delivery_service/Dockerfile
     envVars:

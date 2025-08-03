@@ -22,7 +22,7 @@ A microservices-based backend for a food delivery application.
    - Restaurant Service: https://food-delivery-restaurant-service.onrender.com
    - Delivery Service: https://food-delivery-delivery-service.onrender.com
 
-4. Access the API documentation at:
+5. Access the API documentation at:
    - User Service: https://food-delivery-user-service.onrender.com/docs
    - Restaurant Service: https://food-delivery-restaurant-service.onrender.com/docs
    - Delivery Service: https://food-delivery-delivery-service.onrender.com/docs
