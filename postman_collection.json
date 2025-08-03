@@ -6,15 +6,350 @@
   "item": [
     {
       "name": "User Service",
-      "item": []
+      "item": [
+        {
+          "name": "List All Restaurants",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{USER_SERVICE_URL}}/restaurants/",
+              "host": [
+                "{{USER_SERVICE_URL}}"
+              ],
+              "path": [
+                "restaurants",
+                ""
+              ]
+            },
+            "description": "Retrieves a list of all available restaurants."
+          },
+          "response": []
+        },
+        {
+          "name": "Place Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": 1,\n  \"restaurant_id\": 1,\n  \"items\": [\n    {\n      \"item_id\": 1,\n      \"quantity\": 2\n    },\n    {\n      \"item_id\": 2,\n      \"quantity\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{USER_SERVICE_URL}}/orders/",
+              "host": [
+                "{{USER_SERVICE_URL}}"
+              ],
+              "path": [
+                "orders",
+                ""
+              ]
+            },
+            "description": "Places a new order for a user from a specific restaurant."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Rating",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_id\": 1,\n  \"restaurant_rating\": 5,\n  \"delivery_rating\": 4,\n  \"comment\": \"Great food and fast delivery!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{USER_SERVICE_URL}}/orders/ratings",
+              "host": [
+                "{{USER_SERVICE_URL}}"
+              ],
+              "path": [
+                "orders",
+                "ratings"
+              ]
+            },
+            "description": "Allows a user to leave ratings for an order and delivery agent."
+          },
+          "response": []
+        }
+      ]
     },
     {
       "name": "Restaurant Service",
-      "item": []
+      "item": [
+        {
+          "name": "Create Restaurant (for testing)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pizza Palace\",\n  \"address\": \"123 Main St\",\n  \"phone\": \"555-1234\",\n  \"is_online\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{RESTAURANT_SERVICE_URL}}/restaurants/",
+              "host": [
+                "{{RESTAURANT_SERVICE_URL}}"
+              ],
+              "path": [
+                "restaurants",
+                ""
+              ]
+            },
+            "description": "Creates a new restaurant entry. Useful for initial setup and testing."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Restaurant Status (Online/Offline)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_online\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{RESTAURANT_SERVICE_URL}}/restaurants/1/status",
+              "host": [
+                "{{RESTAURANT_SERVICE_URL}}"
+              ],
+              "path": [
+                "restaurants",
+                "1",
+                "status"
+              ]
+            },
+            "description": "Updates the online/offline status of a restaurant. (Replace '1' with actual restaurant_id)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Restaurant Menu",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"menu_items\": [\n    {\n      \"name\": \"Pepperoni Pizza\",\n      \"description\": \"Classic pepperoni pizza\",\n      \"price\": 15.99,\n      \"is_available\": true\n    },\n    {\n      \"name\": \"Cheese Pizza\",\n      \"description\": \"Simple cheese pizza\",\n      \"price\": 12.50,\n      \"is_available\": true\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{RESTAURANT_SERVICE_URL}}/restaurants/1/menu",
+              "host": [
+                "{{RESTAURANT_SERVICE_URL}}"
+              ],
+              "path": [
+                "restaurants",
+                "1",
+                "menu"
+              ]
+            },
+            "description": "Updates the menu items for a restaurant. (Replace '1' with actual restaurant_id)"
+          },
+          "response": []
+        },
+        {
+          "name": "Accept Order",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{RESTAURANT_SERVICE_URL}}/restaurants/1/orders/1/accept",
+              "host": [
+                "{{RESTAURANT_SERVICE_URL}}"
+              ],
+              "path": [
+                "restaurants",
+                "1",
+                "orders",
+                "1",
+                "accept"
+              ]
+            },
+            "description": "Accepts an order and triggers delivery agent assignment. (Replace IDs)"
+          },
+          "response": []
+        },
+        {
+          "name": "Reject Order",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{RESTAURANT_SERVICE_URL}}/restaurants/1/orders/1/reject",
+              "host": [
+                "{{RESTAURANT_SERVICE_URL}}"
+              ],
+              "path": [
+                "restaurants",
+                "1",
+                "orders",
+                "1",
+                "reject"
+              ]
+            },
+            "description": "Rejects an order. (Replace IDs)"
+          },
+          "response": []
+        }
+      ]
     },
     {
       "name": "Delivery Service",
-      "item": []
+      "item": [
+        {
+          "name": "Create Delivery Agent (for testing)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Agent John Doe\",\n  \"phone\": \"+1234567890\",\n  \"is_available\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{DELIVERY_SERVICE_URL}}/delivery-agents/",
+              "host": [
+                "{{DELIVERY_SERVICE_URL}}"
+              ],
+              "path": [
+                "delivery-agents",
+                ""
+              ]
+            },
+            "description": "Creates a new delivery agent. Useful for initial setup and testing."
+          },
+          "response": []
+        },
+        {
+          "name": "Assign Delivery Agent (Internal)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_id\": 1,\n  \"restaurant_id\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{DELIVERY_SERVICE_URL}}/delivery-agents/assign",
+              "host": [
+                "{{DELIVERY_SERVICE_URL}}"
+              ],
+              "path": [
+                "delivery-agents",
+                "assign"
+              ]
+            },
+            "description": "Assigns an available delivery agent to an order. This is typically called internally by the Restaurant Service."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Delivery Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"picked_up\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{DELIVERY_SERVICE_URL}}/delivery-agents/1/orders/1/status",
+              "host": [
+                "{{DELIVERY_SERVICE_URL}}"
+              ],
+              "path": [
+                "delivery-agents",
+                "1",
+                "orders",
+                "1",
+                "status"
+              ]
+            },
+            "description": "Updates the delivery status of an order. (Replace IDs)"
+          },
+          "response": []
+        }
+      ]
     }
   ]
 }
